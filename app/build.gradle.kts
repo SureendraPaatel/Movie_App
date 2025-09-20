@@ -41,6 +41,12 @@ android {
 
 dependencies {
 
+    implementation(project(":core"))
+    implementation(project(":presentation"))
+    implementation(project(":domain"))
+    implementation(project(":data"))
+
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -56,4 +62,10 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation("androidx.navigation:navigation-compose:2.9.4")
+
+    // Dagger
+    implementation("com.google.dagger:dagger:2.50")
+   // kapt("com.google.dagger:dagger-compiler:2.50")
 }
