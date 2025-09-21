@@ -37,7 +37,6 @@ android {
 dependencies {
 
     implementation(project(":domain"))
-    implementation(project(":core"))
 
     // Retrofit + Gson
     implementation("com.squareup.retrofit2:retrofit:3.0.0")

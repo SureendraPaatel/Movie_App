@@ -41,7 +41,6 @@ android {
 
 dependencies {
 
-    implementation(project(":core"))
     implementation(project(":presentation"))
     implementation(project(":domain"))
     implementation(project(":data"))
@@ -66,6 +65,6 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.9.4")
 
     // Dagger
-    implementation("com.google.dagger:dagger:2.50")
+    implementation("com.google.dagger:dagger:2.57.1")
    // kapt("com.google.dagger:dagger-compiler:2.50")
 }

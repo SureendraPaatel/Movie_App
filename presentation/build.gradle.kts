@@ -40,7 +40,6 @@ android {
 dependencies {
 
     implementation(project(":domain"))
-    implementation(project(":core"))
 
     // Compose
     implementation("androidx.compose.ui:ui:1.9.1")
