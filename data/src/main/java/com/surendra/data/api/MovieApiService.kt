@@ -1,7 +1,8 @@
 package com.surendra.data.api
 
 import com.surendra.data.api.model.MovieApiResponse
-import okhttp3.Response
+import retrofit2.Response
+
 import retrofit2.http.GET
 import retrofit2.http.Path
 

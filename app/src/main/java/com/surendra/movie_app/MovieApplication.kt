@@ -1,8 +1,13 @@
 package com.surendra.movie_app
 
+
 import android.app.Application
+import com.surendra.movie_app.di.components.ApplicationComponent
+import com.surendra.movie_app.di.components.DaggerApplicationComponent
+
 class MovieApplication : Application() {
 
+    // Application-wide component
     val applicationComponent: ApplicationComponent by lazy {
         DaggerApplicationComponent.factory().create(this)
     }
