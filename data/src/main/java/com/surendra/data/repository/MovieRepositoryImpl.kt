@@ -11,12 +11,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
     private val remoteDataSource: MovieRemoteDataSource,
     private val localDataSource: MovieLocalDataSource
-): MovieRepository {
+) : MovieRepository {
+
     override suspend fun getMovies(): Flow<Result<List<Movie>>> = flow {
         try {
             val response = remoteDataSource.getMovies()
@@ -77,7 +81,10 @@ class MovieRepositoryImpl @Inject constructor(
             if (response.isSuccessful && response.body() != null) {
                 val allMovies = response.body()!!.map { MovieMapper.mapApiResponseToDomain(it) }
                 val filteredMovies = allMovies.filter { movie ->
-                    movie.title.contains(query, ignoreCase = true)
+                    movie.title.contains(query, ignoreCase = true) ||
+                            movie.genre.any { it.contains(query, ignoreCase = true) } ||
+                            movie.director.contains(query, ignoreCase = true) ||
+                            movie.cast.any { it.contains(query, ignoreCase = true) }
                 }
 
                 // Update bookmark status for filtered movies
@@ -104,8 +111,8 @@ class MovieRepositoryImpl @Inject constructor(
                 val sortedMovies = when (sortOption) {
                     SortOption.TITLE_ASC -> movies.sortedBy { it.title }
                     SortOption.TITLE_DESC -> movies.sortedByDescending { it.title }
-                    SortOption.RELEASE_DATE_ASC -> movies.sortedBy { it.releaseDate }
-                    SortOption.RELEASE_DATE_DESC -> movies.sortedByDescending { it.releaseDate }
+                    SortOption.RELEASE_DATE_ASC -> movies.sortedBy { parseDateForSorting(it.releaseDate) }
+                    SortOption.RELEASE_DATE_DESC -> movies.sortedByDescending { parseDateForSorting(it.releaseDate) }
                     SortOption.RATING_ASC -> movies.sortedBy { it.rating }
                     SortOption.RATING_DESC -> movies.sortedByDescending { it.rating }
                 }
@@ -122,6 +129,15 @@ class MovieRepositoryImpl @Inject constructor(
             }
         } catch (e: Exception) {
             emit(Result.failure(e))
+        }
+    }
+
+    private fun parseDateForSorting(dateString: String): Date {
+        return try {
+            val formatter = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+            formatter.parse(dateString) ?: Date(0)
+        } catch (e: Exception) {
+            Date(0)
         }
     }
 }

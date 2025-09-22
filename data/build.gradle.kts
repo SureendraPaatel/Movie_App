@@ -52,8 +52,8 @@ dependencies {
 
 
     // Room
-    implementation("androidx.room:room-runtime:2.8.0")
-    implementation("androidx.room:room-ktx:2.8.0")
+    api("androidx.room:room-runtime:2.8.0")
+    api("androidx.room:room-ktx:2.8.0")
     kapt("androidx.room:room-compiler:2.8.0")
 
 

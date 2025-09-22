@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface MovieDao {
 
+
     @Query("SELECT * FROM bookmarked_movies ORDER BY bookmarked_at DESC")
     fun getAllBookmarkedMovies() : Flow<List<MovieEntity>>
 

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Sort
@@ -47,7 +48,7 @@ fun MovieListScreen(
             title = { Text("Movies") },
             actions = {
                 IconButton(onClick = { viewModel.showSortDialog() }) {
-                    Icon(Icons.Default.Sort, contentDescription = "Sort")
+                    Icon(Icons.AutoMirrored.Filled.Sort, contentDescription = "Sort")
                 }
                 IconButton(onClick = onBookmarksClick) {
                     Icon(Icons.Default.Bookmark, contentDescription = "Bookmarks")

@@ -61,13 +61,14 @@ class MovieDetailViewModel @Inject constructor(
                     title = movieDetails.title,
                     releaseDate = movieDetails.releaseDate,
                     rating = movieDetails.rating,
-                    poster = movieDetails.poster,
-                    overview = movieDetails.overview,
+                    posterUrl = movieDetails.posterUrl,
                     genre = movieDetails.genre,
                     director = movieDetails.director,
                     cast = movieDetails.cast,
-                    duration = movieDetails.duration,
-                    isBookmarked = false
+                    durationMinutes = movieDetails.durationMinutes,
+                    isBookmarked = false,
+                    boxOfficeUsd = movieDetails.boxOfficeUsd,
+                    description = movieDetails.description
                 )
                 bookmarkMovieUseCase(movie)
             }

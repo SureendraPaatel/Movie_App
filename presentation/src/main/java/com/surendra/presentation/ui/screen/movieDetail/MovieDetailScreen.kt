@@ -5,7 +5,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Star
@@ -16,11 +19,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import com.surendra.domain.model.Movie
+import com.surendra.data.mapper.MovieMapper
 import com.surendra.presentation.ui.component.ErrorComponent
 import com.surendra.presentation.ui.component.LoadingComponent
 import com.surendra.presentation.viewModel.MovieDetailViewModel
@@ -45,7 +47,7 @@ fun MovieDetailScreen(
             title = { Text("Movie Details") },
             navigationIcon = {
                 IconButton(onClick = onBackClick) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                 }
             },
             actions = {
@@ -85,8 +87,8 @@ fun MovieDetailScreen(
                 ) {
                     // Movie Poster
                     AsyncImage(
-                        model = movie?.poster,
-                        contentDescription = "Movie Poster",
+                        model = movie?.posterUrl,
+                        contentDescription = "${movie?.title} poster",
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(400.dp),
@@ -96,30 +98,57 @@ fun MovieDetailScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     // Movie Title
-                    Text(
-                        text = movie?.title!!,
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontWeight = FontWeight.Bold
-                    )
+                    movie?.title?.let {
+                        Text(
+                            text = it ,
+                            style = MaterialTheme.typography.headlineMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    // Rating
+                    // Rating and Duration Row
                     Row(
+                        modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.Star,
-                            contentDescription = "Rating",
-                            tint = Color(0xFFFFD700),
-                            modifier = Modifier.size(20.dp)
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = "${movie?.rating}/10",
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Medium
-                        )
+                        // Rating
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Star,
+                                contentDescription = "Rating",
+                                tint = Color(0xFFFFB000),
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = "${movie?.rating}/10",
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.Medium
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.width(16.dp))
+
+                        // Duration
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.AccessTime,
+                                contentDescription = "Duration",
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = MovieMapper.formatDuration(movie?.durationMinutes ),
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        }
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -127,57 +156,68 @@ fun MovieDetailScreen(
                     // Release Date
                     DetailItem(
                         label = "Release Date",
-                        value = movie.releaseDate
+                        value = movie?.releaseDate
                     )
 
-                    // Genre
-                    if (!movie?.genre.isNullOrEmpty()) {
+                    // Genres
+                    if (movie?.genre?.isNotEmpty() == true) {
                         DetailItem(
-                            label = "Genre",
-                            value = movie.genre!!
+                            label = "Genres",
+                            value = movie.genre.joinToString(", ")
                         )
                     }
 
                     // Director
-                    if (!movie?.director.isNullOrEmpty()) {
-                        DetailItem(
-                            label = "Director",
-                            value = movie.director!!
-                        )
-                    }
+                    DetailItem(
+                        label = "Director",
+                        value = movie?.director
+                    )
 
                     // Cast
-                    if (!movie?.cast.isNullOrEmpty()) {
+                    if (movie?.cast?.isNotEmpty() == true) {
                         DetailItem(
                             label = "Cast",
-                            value = movie.cast!!
+                            value = movie.cast.joinToString(", ")
                         )
                     }
 
-                    // Duration
-                    if (movie?.duration != null && movie.duration!! > 0) {
-                        DetailItem(
-                            label = "Duration",
-                            value = "${movie.duration} minutes"
-                        )
-                    }
-
-                    // Overview
-                    if (!movie?.overview.isNullOrEmpty()) {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text(
-                            text = "Overview",
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        movie?.overview?.let {
-                            Text(
-                                text = it,
-                                style = MaterialTheme.typography.bodyLarge,
-                                lineHeight = MaterialTheme.typography.bodyLarge.lineHeight
-                            )
+                    // Box Office
+                    movie?.boxOfficeUsd?.let {
+                        if (it > 0) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.AttachMoney,
+                                    contentDescription = "Box Office",
+                                    tint = Color(0xFF4CAF50),
+                                    modifier = Modifier.size(20.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = "Box Office: $${MovieMapper.formatBoxOffice(movie.boxOfficeUsd)}",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Medium,
+                                    color = Color(0xFF4CAF50)
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(16.dp))
                         }
+                    }
+
+                    // Description
+                    Text(
+                        text = "Overview",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    movie?.description?.let {
+                        Text(
+                            text = it  ,
+                            style = MaterialTheme.typography.bodyLarge,
+                            lineHeight = MaterialTheme.typography.bodyLarge.lineHeight
+                        )
                     }
                 }
             }
@@ -188,7 +228,7 @@ fun MovieDetailScreen(
 @Composable
 private fun DetailItem(
     label: String,
-    value: String,
+    value: String?,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
@@ -199,11 +239,12 @@ private fun DetailItem(
             color = MaterialTheme.colorScheme.primary
         )
         Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = value,
-            style = MaterialTheme.typography.bodyLarge
-        )
+        if (value != null) {
+            Text(
+                text = value,
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
         Spacer(modifier = Modifier.height(12.dp))
     }
 }
-
