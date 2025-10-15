@@ -45,7 +45,7 @@ MovieApp/
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 ### Language & Framework
 - **Kotlin** - 100% Kotlin codebase
@@ -82,7 +82,7 @@ MovieApp/
 ### Navigation
 - **Navigation Compose** - Type-safe navigation
 
-## 📐 Project Structure
+##  Project Structure
 
 ### Domain Module (`:domain`)
 Pure Kotlin module with no Android dependencies
@@ -186,7 +186,7 @@ UI (Compose)
 - **Loading States**: Progress indicators during data fetch
 - **Empty States**: User-friendly messages for no data scenarios
 
-## 🧪 Testing Approach
+##  Testing Approach
 
 ### Unit Tests (Mandatory)
 - **ViewModel Tests**: State management and business logic
@@ -360,7 +360,7 @@ Endpoints:
 
 This project is created for the WSA Android Coding Challenge.
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - API provided by MockAPI
 - Images from Picsum Photos
