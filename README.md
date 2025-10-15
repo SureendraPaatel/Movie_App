@@ -1,5 +1,6 @@
 Movie App - Android Coding Challenge
 A modern Android movie application demonstrating Clean Architecture with Multi-Module design and best practices.
+
 📱 Features
 
 Browse movies with circular posters, titles, release dates, and ratings
@@ -9,6 +10,7 @@ View detailed movie information with cast, director, and box office
 Bookmark favorite movies with offline access
 
 🏗️ Architecture
+
 Multi-Module Clean Architecture with clear separation of concerns:
 app/          → DI & Navigation (Dagger)
 domain/       → Business Logic (Use Cases, Entities)
@@ -16,6 +18,7 @@ data/         → Data Layer (Retrofit, Room, Repository)
 presentation/ → UI Layer (Compose, ViewModels)
 core/         → Shared Utilities
 Data Flow: UI → ViewModel → Use Case → Repository → API/Database
+
 🛠️ Tech Stack
 
 Language: Kotlin
@@ -29,6 +32,7 @@ Image Loading: Coil
 Navigation: Navigation Compose
 
 🔑 Key Implementation
+
 Domain Layer
 Pure Kotlin module with business logic, use cases, and repository interfaces. No Android dependencies.
 Data Layer
@@ -45,17 +49,23 @@ State Handling: Loading, error, and empty states with retry functionality
 
 Dependency Injection
 Dagger modules for each layer with proper scoping (@Singleton) ensuring efficient dependency management.
+
 🚀 Setup
+
 bashgit clone https://github.com/yourusername/movie-app.git
 cd movie-app
 ./gradlew clean build
 ./gradlew installDebug
 Requirements: Android Studio Hedgehog+, JDK 17, Min SDK 24
+
 🌐 API
+
 Base URL: https://68cc08ab716562cf507620db.mockapi.io/
 GET /movies          # All movies
 GET /movies/{id}     # Movie details
+
 🧪 Testing
+
 Unit tests implemented for:
 
 ViewModels (state management)
