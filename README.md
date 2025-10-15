@@ -354,7 +354,7 @@ Endpoints:
 **Your Name**
 - GitHub: [@SureendraPaatel](https://github.com/SureendraPaatel)
 - LinkedIn: [Your LinkedIn](https://linkedin.com/in/SureendraPaatel)
-- Email: your.Sureendra.Paatel@gmail.com
+- Email: Sureendra.Paatel@gmail.com
 
 ## 📄 License
 
